@@ -1,0 +1,156 @@
+<div class="container">
+  <div id="contact">
+    <h3>
+      <div class="number">4</div> <span class=""> Formations</span> <span (click)="showForm()" class="float-right formation">Ajouter
+        <i class="fa fa-plus"></i></span>
+    </h3>
+    <div class="bord"></div>
+    <fieldset>
+      <div class="row pb-2" *ngFor="let item of formationData;let i = index">
+        <div class="col-md-3" (click)="open(content,i)">
+          <div>
+            <strong>{{item.name}}</strong> - {{item.ville}}
+          </div>
+          <div class="title">
+            {{item.moisDebut}}/{{item.anneeDebut}} - {{item.moisFin}}/{{item.anneeFin}}
+          </div>
+        </div>
+        <div class="col-md-7" (click)="open(content,i)">
+          <div>
+            <strong>{{ getShortNameEcole(item.ecole)}} </strong>
+          </div>
+          <div>
+            {{getShortNameDescription(item.description)}}
+          </div>
+        </div>
+        <div class="col-md-2 action">
+
+          <i class="fa fa-pencil border-right pr-2" (click)="showFormUpdate(i)" aria-hidden="true"></i>
+          <i class="fa fa-trash pl-2" aria-hidden="true" (click)="remove(i)"></i>
+
+        </div>
+      </div>
+
+      <br>
+      <br>
+      <div *ngIf="ShowForm">
+        <div class="row">
+          <div class="col-md-12">
+            <h5 class="title">Ajouter Une formation</h5><span class="float-right" (click)="closeForm()"><i class="fa fa-times"
+                aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <form #formatioForm="ngForm">
+          <div class="row">
+
+
+            <div class="col-md-5">
+              <small><strong>Formation</strong></small>
+              <input type="text" class="form-control" [(ngModel)]="formation.name" #name="ngModel" name="nom" required>
+            </div>
+            <div class="col-md-2">
+              <small><strong>Ville</strong></small>
+              <input type="text" class="form-control" [(ngModel)]="formation.ville" #ville="ngModel" name="ville"
+                required>
+            </div>
+            <div class="col-md-5">
+              <small><strong>Ecole</strong></small>
+              <input type="text" class="form-control" [(ngModel)]="formation.ecole" #ecole="ngModel" name="ecol"
+                required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-7 pl-3">
+              <small><strong>Période : De</strong></small>
+            </div>
+            <div class="col-md-5">
+              <small><strong>Au</strong></small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <select class="form-control" [(ngModel)]="formation.moisDebut" #moisDebut="ngModel" name="moisdebut"
+                required>
+                <option *ngFor="let month of months" [value]="month">{{month}}</option>
+              </select>
+
+            </div>
+            <div class="col-md-3">
+              <select name="" class="form-control" [(ngModel)]="formation.anneeDebut" #anneeDebut="ngModel" name="anneedebut"
+                required>
+                <option *ngFor="let year of years" [value]="year">{{year}}</option>
+              </select>
+
+            </div>
+            <div class="col-md-2 center">
+              <small><strong>Aujourd'hui</strong></small>
+              <div><input type="checkbox" name="now" #tonow="ngModel" (ngModelChange)="setDateNow()" [(ngModel)]="isNow"></div>
+            </div>
+            <div class="col-md-2">
+              <select [disabled]="isNow" class="form-control" [(ngModel)]="formation.moisFin" #moisFin="ngModel" name="moisfin"
+                required>
+                <option *ngFor="let month of months" [value]="month">{{month}}</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select [disabled]="isNow" name="annefin" class="form-control" [(ngModel)]="formation.anneeFin" #anneeFin="ngModel"
+                name="anneefin" required>
+                <option *ngFor="let year of years" [value]="year">{{year}}</option>
+              </select>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <small><strong>Description</strong></small>
+              <textarea required rows="4" cols="50" class="form-control" [(ngModel)]="formation.description"
+                #description="ngModel" name="description">
+                                     </textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button [disabled]="!formatioForm.valid" class="mt-3 btn btn-success float-right btn-confirmer" (click)="ajouterFormation()">CONFIRMER</button></div>
+
+          </div>
+        </form>
+
+      </div>
+
+
+    </fieldset>
+
+
+  </div>
+
+</div>
+
+<ng-template #content let-modal>
+
+  <div class="modal-body p-3">
+
+    <div class="row">
+      <div class="col-md-4">
+        <div>
+          <strong>{{formation?.name}}</strong> - {{formation?.ville}}
+        </div>
+        <div class="title">
+          {{formation?.moisDebut}}/{{formation?.anneeDebut}} - {{formation?.moisFin}}/{{formation?.anneeFin}}
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div>
+          <strong>{{ formation?.ecole}} </strong>
+        </div>
+        <div>
+          {{formation?.description}}
+        </div>
+      </div>
+
+    </div>
+
+
+    <button type="button" class="btn btn-success float-right" (click)="close('Save click')">fermer</button>
+  </div>
+</ng-template>
